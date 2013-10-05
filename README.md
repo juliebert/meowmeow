@@ -9,8 +9,10 @@ Members
 =======
 
 * Jensen Hussey
+* Vicky Tuite 
+* Jane Nguyen
 * Blithe Brandon
 * Lesley Bell
 * Julie Bert
 * Jane Nguyen
-* 
+* Lydia Katsamberis
