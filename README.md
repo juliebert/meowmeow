@@ -6,4 +6,4 @@ Motion-triggered LED turn-signal system.
 Members
 
 * Jensen Hussey
-* 
+* Vicky Tuite 
