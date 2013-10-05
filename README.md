@@ -1,3 +1,4 @@
+
 Team MEOW MEOW
 ========
 
@@ -8,8 +9,10 @@ Members
 =======
 
 * Jensen Hussey
-<<<<<<< HEAD
 * Vicky Tuite 
-=======
 * Jane Nguyen
->>>>>>> f9797ef57c58af51627a1ce3412ba5715e08a407
+* Blithe Brandon
+* Lesley Bell
+* Julie Bert
+* Jane Nguyen
+* Lydia Katsamberis
