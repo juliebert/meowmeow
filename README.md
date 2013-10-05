@@ -1,3 +1,4 @@
+
 Team MEOW MEOW
 ========
 
@@ -9,10 +10,7 @@ Members
 
 * Jensen Hussey
 * Blithe Brandon
-* 
-=======
-=======
-* 
+* Lesley Bell
 * Julie Bert
-*
 * Jane Nguyen
+
