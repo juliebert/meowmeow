@@ -13,4 +13,4 @@ Members
 * Lesley Bell
 * Julie Bert
 * Jane Nguyen
-
+* Lydia Katsamberis
