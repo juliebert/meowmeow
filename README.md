@@ -7,3 +7,5 @@ Members
 
 * Jensen Hussey
 * 
+* Julie Bert
+*
