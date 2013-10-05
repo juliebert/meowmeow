@@ -11,4 +11,8 @@ Members
 * Blithe Brandon
 * 
 =======
+=======
+* 
+* Julie Bert
+*
 * Jane Nguyen
