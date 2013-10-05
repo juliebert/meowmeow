@@ -1,6 +1,6 @@
-teambike
+Team MEOW MEOW
 ========
 
-bike turn signal for silicon chef hackathon 
+Motion-triggered LED turn-signal system.
 
 ++++++++
