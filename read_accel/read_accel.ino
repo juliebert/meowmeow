@@ -65,6 +65,10 @@ int print1 = 0;
 int threshold = 2000;
 //accel union
 accel_t_gyro_union accel_t_gyro;
+//Output pins
+BREAK_PIN = 0;
+TURN_PIN = 1;
+
 void setup()
 {      
   int error;
@@ -150,8 +154,8 @@ void setup()
   zout = zin;
   
   //These are the outputs for the brake light and turnsignal test
-  pinMode(12, OUTPUT); //Brakelight
-  pinMode(11, OUTPUT); //Turnsignal
+  pinMode(BRAKE_PIN, OUTPUT); //Brakelight
+  pinMode(TURN_PIN, OUTPUT); //Turnsignal
 }
 
 //In the loop read the acceleromter values
