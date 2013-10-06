@@ -85,16 +85,14 @@ Version 2.0 6/2012 MDG
 // First we'll set up constants for the pin numbers.
 // This will make it easier to follow the code below.
 
-const int button1Pin = 2;  // pushbutton 1 pin
-const int button2Pin = 3;  // pushbutton 2 pin
+const int buttonPin = 2;  // pushbutton 1 pin
 const int ledPin =  13;    // LED pin
 
 
 void setup()
 {
   // Set up the pushbutton pins to be an input:
-  pinMode(button1Pin, INPUT);
-  pinMode(button2Pin, INPUT);
+  pinMode(buttonPin, INPUT);
 
   // Set up the LED pin to be an output:
   pinMode(ledPin, OUTPUT);      
@@ -103,7 +101,7 @@ void setup()
 
 void loop()
 {
-  int button1State, button2State;  // variables to hold the pushbutton states
+  int buttonState;  // variables to hold the pushbutton states
 
   // Since a pushbutton has only two states (pushed or not pushed),
   // we've run them into digital inputs. To read an input, we'll
@@ -114,8 +112,7 @@ void loop()
   // Here we'll read the current pushbutton states into
   // two variables:
 
-  button1State = digitalRead(button1Pin);
-  button2State = digitalRead(button2Pin);
+  buttonState = digitalRead(buttonPin);
 
   // Remember that if the button is being pressed, it will be
   // connected to GND. If the button is not being pressed,
@@ -152,10 +149,7 @@ void loop()
 
   // Now let's use the above functions to combine them into one statement:
   
-  if (((button1State == LOW) || (button2State == LOW))  // if we're pushing button 1 OR button 2
-      && !                                               // AND we're NOT
-      ((button1State == LOW) && (button2State == LOW))) // pushing button 1 AND button 2
-                                                        // then...
+  if (buttonState == LOW)
   {
     digitalWrite(ledPin, HIGH);   // turn the LED on (HIGH is the voltage level)
     delay(1000);               // wait for a second
