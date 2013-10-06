@@ -10,5 +10,6 @@ Members
 
 * Jensen Hussey
 * Lesley Bell
+* Julie Bert
 * Jane Nguyen
 
