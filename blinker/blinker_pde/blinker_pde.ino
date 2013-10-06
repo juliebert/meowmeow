@@ -86,20 +86,20 @@ Version 2.0 6/2012 MDG
 // This will make it easier to follow the code below.
 
 const int buttonPin = 2;  // pushbutton 1 pin
-const int ledPin1 =  13;    // LED pin
-const int ledPin2 =  12;    // LED pin
-const int ledPin3 =  11;    // LED pin
 
+int timer = 200;             // The higher the number, the slower the timing.
+int ledPins[] = { 
+     11, 12, 13 };          // an array of pin numbers to which LEDs are attached
+int pinCount = 3;           // the number of pins (i.e. the length of the array)
 
 void setup()
 {
   // Set up the pushbutton pins to be an input:
   pinMode(buttonPin, INPUT);
 
-  // Set up the LED pin to be an output:
-  pinMode(ledPin1, OUTPUT);      
-  pinMode(ledPin2, OUTPUT);  
-  pinMode(ledPin3, OUTPUT);
+  for (int thisPin = pinCount - 1; thisPin >= 0; thisPin--)  {
+    pinMode(ledPins[thisPin], OUTPUT);      
+  }
 }
 
 
@@ -155,19 +155,29 @@ void loop()
   
   if (buttonState == LOW)
   {
-    digitalWrite(ledPin1, HIGH);   // turn the LED on (HIGH is the voltage level)
-    delay(1000);
-    digitalWrite(ledPin1, LOW);    // turn the LED off by making the voltage LOW
-    digitalWrite(ledPin2, HIGH);   // turn the LED on (HIGH is the voltage level)
-    delay(1000);
-    digitalWrite(ledPin2, LOW);    // turn the LED off by making the voltage LOW
-    digitalWrite(ledPin3, HIGH);   // turn the LED on (HIGH is the voltage level)
-    delay(1000);
-    digitalWrite(ledPin3, LOW);    // turn the LED off by making the voltage LOW
+      for (int thisPin = 0; thisPin < pinCount; thisPin++) { 
+      // turn the pin on:
+      digitalWrite(ledPins[thisPin], HIGH);   
+      delay(timer);                  
+      // turn the pin off:
+      digitalWrite(ledPins[thisPin], LOW);
+      }
+
   }
+    
+    
+//    digitalWrite(ledPin1, HIGH);   // turn the LED on (HIGH is the voltage level)
+//    delay(300);
+//    digitalWrite(ledPin1, LOW);    // turn the LED off by making the voltage LOW
+//    digitalWrite(ledPin2, HIGH);   // turn the LED on (HIGH is the voltage level)
+//    delay(300);
+//    digitalWrite(ledPin2, LOW);    // turn the LED off by making the voltage LOW
+//    digitalWrite(ledPin3, HIGH);   // turn the LED on (HIGH is the voltage level)
+//    delay(300);
+//    digitalWrite(ledPin3, LOW);    // turn the LED off by making the voltage LOW
+//  }
   else
   {
-    digitalWrite(ledPin1, LOW);  // turn the LED off
   }
      	
   // As you can see, logic operators can be combined to make
