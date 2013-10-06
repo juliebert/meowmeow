@@ -822,9 +822,9 @@ void loop()
   yin = accel_t_gyro.value.y_accel;
   zin = accel_t_gyro.value.z_accel;
   
-  xout = xout - 0.1(xin-xout);
-  yout = yout - 0.1(yin-yout);
-  zout = zout - 0.1(zin-zout);
+  xout = xout - 0.1 * (xin-xout);
+  yout = yout - 0.1 * (yin-yout);
+  zout = zout - 0.1 * (zin-zout);
 
 
   delay(100);
