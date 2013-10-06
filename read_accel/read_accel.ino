@@ -60,14 +60,59 @@ enum Brake_Light{
 //These read out the gyro values
 int xin,yin,zin,xout,yout,zout;
 //Turn on and off the print statements to the serial port
-int print1 = 0;
+int print1 = 1;
 //Threshold may need some tuning
 int threshold = 2000;
 //accel union
 accel_t_gyro_union accel_t_gyro;
+
+  int error;
+
+void readRawAccelValues(char setupOrLoop){
+	 // Read the raw values.
+	  // Read 14 bytes at once,
+	  // containing acceleration, temperature and gyro.
+	  // With the default settings of the MPU-6050,
+	  // there is no filter enabled, and the values
+	  // are not very stable.
+	  error = MPU6050_read (MPU6050_ACCEL_XOUT_H, (uint8_t *) &accel_t_gyro, sizeof(accel_t_gyro));
+
+
+	  // Swap all high and low bytes.
+	  // After this, the registers values are swapped,
+	  // so the structure name like x_accel_l does no
+	  // longer contain the lower byte.
+	  uint8_t swap;
+	  #define SWAP(x,y) swap = x; x = y; y = swap
+
+	  SWAP (accel_t_gyro.reg.x_accel_h, accel_t_gyro.reg.x_accel_l);
+	  SWAP (accel_t_gyro.reg.y_accel_h, accel_t_gyro.reg.y_accel_l);
+	  SWAP (accel_t_gyro.reg.z_accel_h, accel_t_gyro.reg.z_accel_l);
+	  SWAP (accel_t_gyro.reg.t_h, accel_t_gyro.reg.t_l);
+	  SWAP (accel_t_gyro.reg.x_gyro_h, accel_t_gyro.reg.x_gyro_l);
+	  SWAP (accel_t_gyro.reg.y_gyro_h, accel_t_gyro.reg.y_gyro_l);
+	  SWAP (accel_t_gyro.reg.z_gyro_h, accel_t_gyro.reg.z_gyro_l);
+
+
+	  // Print the raw acceleration values to serial port for monitoring
+	  // Only prints in debug mode
+	  if (print1) {
+                Serial.print("Setup or Loop Function: ");
+                Serial.println(setupOrLoop);
+		Serial.print(F("x: "));
+		Serial.println(accel_t_gyro.value.x_accel, DEC);
+		Serial.print(F("y: "));
+		Serial.println(accel_t_gyro.value.y_accel, DEC);
+		Serial.print(F("z: "));
+		Serial.println(accel_t_gyro.value.z_accel, DEC);
+		//Serial.println(F(""));
+	  }
+  }
+
+
+
 void setup()
 {      
-  int error;
   uint8_t c;
   
   BLight = boff;
@@ -102,42 +147,8 @@ void setup()
   MPU6050_write_reg (MPU6050_PWR_MGMT_1, 0);
   
   
-  // Read the raw values.
-  // Read 14 bytes at once,
-  // containing acceleration, temperature and gyro.
-  // With the default settings of the MPU-6050,
-  // there is no filter enabled, and the values
-  // are not very stable.
-  error = MPU6050_read (MPU6050_ACCEL_XOUT_H, (uint8_t *) &accel_t_gyro, sizeof(accel_t_gyro));
-
-
-  // Swap all high and low bytes.
-  // After this, the registers values are swapped,
-  // so the structure name like x_accel_l does no
-  // longer contain the lower byte.
-  uint8_t swap;
-  #define SWAP(x,y) swap = x; x = y; y = swap
-
-  SWAP (accel_t_gyro.reg.x_accel_h, accel_t_gyro.reg.x_accel_l);
-  SWAP (accel_t_gyro.reg.y_accel_h, accel_t_gyro.reg.y_accel_l);
-  SWAP (accel_t_gyro.reg.z_accel_h, accel_t_gyro.reg.z_accel_l);
-  SWAP (accel_t_gyro.reg.t_h, accel_t_gyro.reg.t_l);
-  SWAP (accel_t_gyro.reg.x_gyro_h, accel_t_gyro.reg.x_gyro_l);
-  SWAP (accel_t_gyro.reg.y_gyro_h, accel_t_gyro.reg.y_gyro_l);
-  SWAP (accel_t_gyro.reg.z_gyro_h, accel_t_gyro.reg.z_gyro_l);
-
-
-  // Print the raw acceleration values to serial port for monitoring
-  // Only prints in debug mode
-  if (print1) {
-    Serial.print(F("x: "));
-    Serial.println(accel_t_gyro.value.x_accel, DEC);
-    Serial.print(F("y: "));
-    Serial.println(accel_t_gyro.value.y_accel, DEC);
-    Serial.print(F("z: "));
-    Serial.println(accel_t_gyro.value.z_accel, DEC);
-    //Serial.println(F(""));
-  }
+  // Read
+   readRawAccelValues('S');
   
   //initialize the raw read values for the accelerometer
   xin = accel_t_gyro.value.x_accel;
@@ -158,42 +169,8 @@ void setup()
 //Update the 
 void loop()
 {
-  int error;
-
-  // Read the raw values.
-  // Read 14 bytes at once,
-  // containing acceleration, temperature and gyro.
-  // With the default settings of the MPU-6050,
-  // there is no filter enabled, and the values
-  // are not very stable.
-  error = MPU6050_read (MPU6050_ACCEL_XOUT_H, (uint8_t *) &accel_t_gyro, sizeof(accel_t_gyro));
-
-  // Swap all high and low bytes.
-  // After this, the registers values are swapped,
-  // so the structure name like x_accel_l does no
-  // longer contain the lower byte.
-  uint8_t swap;
-  #define SWAP(x,y) swap = x; x = y; y = swap
-
-  SWAP (accel_t_gyro.reg.x_accel_h, accel_t_gyro.reg.x_accel_l);
-  SWAP (accel_t_gyro.reg.y_accel_h, accel_t_gyro.reg.y_accel_l);
-  SWAP (accel_t_gyro.reg.z_accel_h, accel_t_gyro.reg.z_accel_l);
-  SWAP (accel_t_gyro.reg.t_h, accel_t_gyro.reg.t_l);
-  SWAP (accel_t_gyro.reg.x_gyro_h, accel_t_gyro.reg.x_gyro_l);
-  SWAP (accel_t_gyro.reg.y_gyro_h, accel_t_gyro.reg.y_gyro_l);
-  SWAP (accel_t_gyro.reg.z_gyro_h, accel_t_gyro.reg.z_gyro_l);
-
-
-  // Print the raw acceleration values to serial monitor
-  // If in debug mode
-  if (print1){
-    Serial.print(F("x: "));
-    Serial.println(accel_t_gyro.value.x_accel, DEC);
-    Serial.print(F("y: "));
-    Serial.println(accel_t_gyro.value.y_accel, DEC);
-    Serial.print(F("z: "));
-    Serial.println(accel_t_gyro.value.z_accel, DEC);
-  }
+  // Read
+  void readRawAccelValues('L');
   
   //updat raw acceleration values
   xin = accel_t_gyro.value.x_accel;
