@@ -626,6 +626,9 @@
 // I2C address thus becomes 0x69.
 #define MPU6050_I2C_ADDRESS 0x68
 
+//**************************************************************
+// Above should go in a header file that we #include
+//**************************************************************
 
 // Declaring an union for the registers and the axis values.
 // The byte order does not match the byte order of
@@ -666,8 +669,9 @@ typedef union accel_t_gyro_union
     int16_t z_gyro;
   } value;
 };
-
-accel_t_gyro_union accel_t_gyro;
+//****************************************************************
+//Enum to keep track of the Turn_Signal State and the Braking State
+//****************************************************************
 enum Turn_Signal{
      right_on,
      left_on,
@@ -679,10 +683,17 @@ enum Brake_Light{
      boff
 }BLight;
 
+//*******************************************************************
+//Global Variables accessed by both set-up and loop functions
+//*******************************************************************
+//These read out the gyro values
 int xin,yin,zin,xout,yout,zout;
+//Turn on and off the print statements to the serial port
 int print1 = 0;
+//Threshold may need some tuning
 int threshold = 2000;
-  
+//accel union
+accel_t_gyro_union accel_t_gyro;
 void setup()
 {      
   int error;
@@ -693,9 +704,8 @@ void setup()
   
   if (print1){
     Serial.begin(9600);
-    //Serial.println(F("InvenSense MPU-6050"));
-    //Serial.println(F("June 2012"));
   }
+  
   // Initialize the 'Wire' class for the I2C-bus.
   Wire.begin();
 
@@ -706,12 +716,8 @@ void setup()
   //    Clock source at internal 8MHz
   //    The device is in sleep mode.
   //
-
   error = MPU6050_read (MPU6050_WHO_AM_I, &c, 1);
-  //Serial.print(F("WHO_AM_I : "));
-  //Serial.print(c,HEX);
-  //Serial.print(F(", error = "));
-  //Serial.println(error,DEC);
+  
 
   // According to the datasheet, the 'sleep' bit
   // should read a '1'. But I read a '0'.
@@ -719,10 +725,6 @@ void setup()
   // is in sleep mode at power-up. Even if the
   // bit reads '0'.
   error = MPU6050_read (MPU6050_PWR_MGMT_2, &c, 1);
-  //Serial.print(F("PWR_MGMT_2 : "));
-  //Serial.print(c,HEX);
-  //Serial.print(F(", error = "));
-  //Serial.println(error,DEC);
 
 
   // Clear the 'sleep' bit to start the sensor.
@@ -736,8 +738,6 @@ void setup()
   // there is no filter enabled, and the values
   // are not very stable.
   error = MPU6050_read (MPU6050_ACCEL_XOUT_H, (uint8_t *) &accel_t_gyro, sizeof(accel_t_gyro));
-  //Serial.print(F("Read accel, temp and gyro, error = "));
-  //Serial.println(error,DEC);
 
 
   // Swap all high and low bytes.
@@ -756,9 +756,9 @@ void setup()
   SWAP (accel_t_gyro.reg.z_gyro_h, accel_t_gyro.reg.z_gyro_l);
 
 
-  // Print the raw acceleration values
+  // Print the raw acceleration values to serial port for monitoring
+  // Only prints in debug mode
   if (print1) {
-    //Serial.print(F("accel x,y,z: "));
     Serial.print(F("x: "));
     Serial.println(accel_t_gyro.value.x_accel, DEC);
     Serial.print(F("y: "));
@@ -768,18 +768,23 @@ void setup()
     //Serial.println(F(""));
   }
   
+  //initialize the raw read values for the accelerometer
   xin = accel_t_gyro.value.x_accel;
   yin = accel_t_gyro.value.y_accel;
   zin = accel_t_gyro.value.z_accel;
   
+  //initialize the filtered read values for the accelerometer
   xout = xin;
   yout = yin;
   zout = zin;
   
-  pinMode(12, OUTPUT);
+  //These are the outputs for the brake light and turnsignal test
+  pinMode(12, OUTPUT); //Brakelight
+  pinMode(11, OUTPUT); //Turnsignal
 }
 
-
+//In the loop read the acceleromter values
+//Update the 
 void loop()
 {
   int error;
@@ -792,9 +797,6 @@ void loop()
   // there is no filter enabled, and the values
   // are not very stable.
   error = MPU6050_read (MPU6050_ACCEL_XOUT_H, (uint8_t *) &accel_t_gyro, sizeof(accel_t_gyro));
-  //Serial.print(F("Read accel, temp and gyro, error = "));
-  //Serial.println(error,DEC);
-
 
   // Swap all high and low bytes.
   // After this, the registers values are swapped,
@@ -827,15 +829,28 @@ void loop()
   yin = accel_t_gyro.value.y_accel;
   zin = accel_t_gyro.value.z_accel;
   
-  xout = xout - 0.1 * (xin-xout);
-  yout = yout - 0.1 * (yin-yout);
-  zout = zout - 0.1 * (zin-zout);
+  xout = xout + 0.1 * (xin-xout);
+  yout = yout + 0.1 * (yin-yout);
+  zout = zout + 0.1 * (zin-zout);
 
   if (zout > threshold){
     BLight = on;
+    Serial.print(F("zout: "));
+    Serial.println(zout, DEC);
   }
   else{
     BLight = boff;
+  }
+  if (TSignal != toff){
+    if (yout > 2*threshold || yout < -2*threshold){
+      TSignal = toff;
+    }
+  }
+  
+  if (yout > 2*threshold || yout < -2*threshold){
+    digitalWrite(11, HIGH);
+  }else{
+    digitalWrite(11, LOW);
   }
   
   if (BLight == on){
