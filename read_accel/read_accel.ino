@@ -681,6 +681,7 @@ enum Brake_Light{
 
 int xin,yin,zin,xout,yout,zout;
 int print1 = 0;
+int threshold = 2000;
   
 void setup()
 {      
@@ -775,6 +776,7 @@ void setup()
   yout = yin;
   zout = zin;
   
+  pinMode(12, OUTPUT);
 }
 
 
@@ -829,6 +831,20 @@ void loop()
   yout = yout - 0.1 * (yin-yout);
   zout = zout - 0.1 * (zin-zout);
 
+  if (zout > threshold){
+    BLight = on;
+  }
+  else{
+    BLight = boff;
+  }
+  
+  if (BLight == on){
+    digitalWrite(12, HIGH);
+  }
+  if (BLight == boff){
+    digitalWrite(12,LOW);
+  }
+    
 
   delay(100);
 }
