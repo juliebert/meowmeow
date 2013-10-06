@@ -16,7 +16,7 @@
 // It will not work with an older version,
 // since Wire.endTransmission() uses a parameter
 // to hold or release the I2C bus.
-//
+//h
 // Documentation:
 // - The InvenSense documents:
 //   - "MPU-6000 and MPU-6050 Product Specification",
@@ -680,6 +680,7 @@ enum Brake_Light{
 }BLight;
 
 int xin,yin,zin,xout,yout,zout;
+int print1 = 0;
   
 void setup()
 {      
@@ -689,10 +690,11 @@ void setup()
   BLight = boff;
   TSignal = toff;
   
-  Serial.begin(9600);
-  //Serial.println(F("InvenSense MPU-6050"));
-  //Serial.println(F("June 2012"));
-
+  if (print1){
+    Serial.begin(9600);
+    //Serial.println(F("InvenSense MPU-6050"));
+    //Serial.println(F("June 2012"));
+  }
   // Initialize the 'Wire' class for the I2C-bus.
   Wire.begin();
 
@@ -754,15 +756,16 @@ void setup()
 
 
   // Print the raw acceleration values
-
-  //Serial.print(F("accel x,y,z: "));
-  Serial.print(F("x: "));
-  Serial.println(accel_t_gyro.value.x_accel, DEC);
-  Serial.print(F("y: "));
-  Serial.println(accel_t_gyro.value.y_accel, DEC);
-  Serial.print(F("z: "));
-  Serial.println(accel_t_gyro.value.z_accel, DEC);
-  //Serial.println(F(""));
+  if (print1) {
+    //Serial.print(F("accel x,y,z: "));
+    Serial.print(F("x: "));
+    Serial.println(accel_t_gyro.value.x_accel, DEC);
+    Serial.print(F("y: "));
+    Serial.println(accel_t_gyro.value.y_accel, DEC);
+    Serial.print(F("z: "));
+    Serial.println(accel_t_gyro.value.z_accel, DEC);
+    //Serial.println(F(""));
+  }
   
   xin = accel_t_gyro.value.x_accel;
   yin = accel_t_gyro.value.y_accel;
@@ -808,16 +811,16 @@ void loop()
 
 
   // Print the raw acceleration values
-
-  //Serial.print(F("accel x,y,z: "));
-  Serial.print(F("x: "));
-  Serial.println(accel_t_gyro.value.x_accel, DEC);
-  Serial.print(F("y: "));
-  Serial.println(accel_t_gyro.value.y_accel, DEC);
-  Serial.print(F("z: "));
-  Serial.println(accel_t_gyro.value.z_accel, DEC);
-  //Serial.println(F(""));
-
+  if (print1){
+    //Serial.print(F("accel x,y,z: "));
+    Serial.print(F("x: "));
+    Serial.println(accel_t_gyro.value.x_accel, DEC);
+    Serial.print(F("y: "));
+    Serial.println(accel_t_gyro.value.y_accel, DEC);
+    Serial.print(F("z: "));
+    Serial.println(accel_t_gyro.value.z_accel, DEC);
+    //Serial.println(F(""));
+  }
   xin = accel_t_gyro.value.x_accel;
   yin = accel_t_gyro.value.y_accel;
   zin = accel_t_gyro.value.z_accel;
