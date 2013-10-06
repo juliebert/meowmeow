@@ -1,4 +1,4 @@
-nt softpotPin = A0; //analog pin 0
+int softpotPin = A0; //analog pin 0
 int led = 13;
 
 void setup(){
