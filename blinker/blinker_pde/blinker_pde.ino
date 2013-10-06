@@ -86,7 +86,9 @@ Version 2.0 6/2012 MDG
 // This will make it easier to follow the code below.
 
 const int buttonPin = 2;  // pushbutton 1 pin
-const int ledPin =  13;    // LED pin
+const int ledPin1 =  13;    // LED pin
+const int ledPin2 =  12;    // LED pin
+const int ledPin3 =  11;    // LED pin
 
 
 void setup()
@@ -95,7 +97,9 @@ void setup()
   pinMode(buttonPin, INPUT);
 
   // Set up the LED pin to be an output:
-  pinMode(ledPin, OUTPUT);      
+  pinMode(ledPin1, OUTPUT);      
+  pinMode(ledPin2, OUTPUT);  
+  pinMode(ledPin3, OUTPUT);
 }
 
 
@@ -151,14 +155,19 @@ void loop()
   
   if (buttonState == LOW)
   {
-    digitalWrite(ledPin, HIGH);   // turn the LED on (HIGH is the voltage level)
-    delay(1000);               // wait for a second
-    digitalWrite(ledPin, LOW);    // turn the LED off by making the voltage LOW
-    delay(1000);               // wait for a second
+    digitalWrite(ledPin1, HIGH);   // turn the LED on (HIGH is the voltage level)
+    delay(1000);
+    digitalWrite(ledPin1, LOW);    // turn the LED off by making the voltage LOW
+    digitalWrite(ledPin2, HIGH);   // turn the LED on (HIGH is the voltage level)
+    delay(1000);
+    digitalWrite(ledPin2, LOW);    // turn the LED off by making the voltage LOW
+    digitalWrite(ledPin3, HIGH);   // turn the LED on (HIGH is the voltage level)
+    delay(1000);
+    digitalWrite(ledPin3, LOW);    // turn the LED off by making the voltage LOW
   }
   else
   {
-    digitalWrite(ledPin, LOW);  // turn the LED off
+    digitalWrite(ledPin1, LOW);  // turn the LED off
   }
      	
   // As you can see, logic operators can be combined to make
